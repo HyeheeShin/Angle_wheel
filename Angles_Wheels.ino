@@ -1,5 +1,5 @@
 #include <Servo.h>
-Servo myservo;      //Servo is "myservo"
+Servo myservo;      //Servo is "myservo" hi
 //int pos = 91;
  int Turns = 0;     //The number of rotations
  float thetaP = 0;  //The previous theta
