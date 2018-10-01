@@ -5,12 +5,18 @@ Servo myservo;      //Servo is "myservo"
  float thetaP = 0;  //The previous theta
  float theta = 0;   // The theta of this measurement
  int count = 0;     // Count for the number of measurements; the number of times Angle is called
+ int kp = 1;
 void setup() {
   Serial.begin(9600);   
   myservo.attach(9);  // Attach to pin 9
   
 }
-int readPos(int pwmPin)
+
+void servo_speed(pinControl, set_speed){
+  //CREATE
+  
+}
+int readPos(int pwmPin, int targetAngle)
 {
  int tHigh;           // time "on"
  int tLow;            // time "off"
@@ -68,9 +74,27 @@ int readPos(int pwmPin)
 
  // Set the current theta, as thetaP of the next round
  thetaP = theta;
+
+  float errorAngle = targetAngle - angle;
+  float output = errorAngle * Kp;
+  
+  if(output > 200) output = 200;
+  if(output < -200) output = -200;
+  
+  if(errorAngle > 0)
+    offset = 30;
+  else if(errorAngle < 0)
+    offset = -30;
+  else
+    offset = 0;
+  
+  servo_speed(pinControl, output + offset);
 }
 
+
+
 void loop() {
+  int target = 720;
   myservo.write(75);  // Run servo
   readPos(13);        // Feedback at pin 13
   delay(1.1);         
