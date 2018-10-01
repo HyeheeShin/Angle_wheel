@@ -75,11 +75,21 @@ int readPos(int pwmPin, int targetAngle)
  // Set the current theta, as thetaP of the next round
  thetaP = theta;
 
+// Control Function
+
+  // Find the variance in target angle and angle
   float errorAngle = targetAngle - angle;
-  float output = errorAngle * Kp;
   
+  // Multiply the error by Kp (for PID controller)
+  float output = errorAngle * Kp;
+
+  // Set boundaries for speed
   if(output > 200) output = 200;
   if(output < -200) output = -200;
+
+  // If errorAngle is positive, speed up
+  // If errorAngle is negative, slow down
+  // Else speed is correct
   
   if(errorAngle > 0)
     offset = 30;
@@ -87,7 +97,8 @@ int readPos(int pwmPin, int targetAngle)
     offset = -30;
   else
     offset = 0;
-  
+    
+  // Set the speed
   servo_speed(pinControl, output + offset);
 }
 
